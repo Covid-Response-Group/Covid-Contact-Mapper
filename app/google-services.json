@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "181023610659",
+    "firebase_url": "https://covid-contact-tracker.firebaseio.com",
+    "project_id": "covid-contact-tracker",
+    "storage_bucket": "covid-contact-tracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181023610659:android:81506c7af96aec3db49e96",
+        "android_client_info": {
+          "package_name": "com.wordingly.covidcontacttracer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181023610659-d5j8uumjo2ht0p9o9bgq5c7p75j951sg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wordingly.covidcontacttracer",
+            "certificate_hash": "4a1fc4b64a7f5f8b13c94ee638dbfaf25972b379"
+          }
+        },
+        {
+          "client_id": "181023610659-9v1b07svaj1cr71ucgdfm1fjp2cg6hde.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPQtL1X0b6ve5Hal52rzj8cRL9Hizekts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "181023610659-9v1b07svaj1cr71ucgdfm1fjp2cg6hde.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
