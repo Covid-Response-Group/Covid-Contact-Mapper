@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Covid Contact Tracer</string>
+    <string name="str_btn_google_signin">Sign In With Google</string>
+</resources>
