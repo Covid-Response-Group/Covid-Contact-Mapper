@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Covid Contact Tracer</string>
     <string name="str_btn_google_signin">Sign In With Google</string>
+    <string name="loaction_permission_message">We need to access your device location in order to track your proximity to the COVID infected people and to warn you if one of your close contacts has got COVID.</string>
 </resources>
