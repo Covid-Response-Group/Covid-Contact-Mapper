@@ -12,4 +12,5 @@
     <string name="str_btn_google_signin">Sign In With Google</string>
     <string name="location_permission_message">We need to access your device location in order to track your proximity to the COVID infected people and to warn you if one of your close contacts has got COVID.</string>
     <string name="location_updated">Location Updated: %1$s</string>
+    <string name="info_msg">Please DO NOT revoke the permissions for this app. We need to calculate your location accurately and in case of possible vulnerability, we will inform you over email. We anonymously analyse location data and when a person is reported to be infected, we notify his\/her close connections for possibility of infection. Over next week, we will update the app to add more features.</string>
 </resources>

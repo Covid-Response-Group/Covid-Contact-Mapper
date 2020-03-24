@@ -72,7 +72,7 @@ public class LocationUpdatesService extends Service {
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 36000;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
 
     /**
      * The fastest rate for active location updates. Updates will never be more frequent
@@ -163,8 +163,8 @@ public class LocationUpdatesService extends Service {
             removeLocationUpdates();
             stopSelf();
         }
-        // Tells the system to not try to recreate the service after it has been killed.
-        return START_NOT_STICKY;
+
+        return START_STICKY;
     }
 
     @Override
@@ -275,7 +275,7 @@ public class LocationUpdatesService extends Service {
                 .setOngoing(true)
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setTicker(text)
+                .setTicker(text + "-"+ mLocation.getAccuracy())
                 .setWhen(System.currentTimeMillis());
 
         // Set the Channel ID for Android O.
@@ -288,11 +288,13 @@ public class LocationUpdatesService extends Service {
 
     private void getLastLocation() {
         try {
+
             mFusedLocationClient.getLastLocation()
                     .addOnCompleteListener(new OnCompleteListener<Location>() {
                         @Override
                         public void onComplete(@NonNull Task<Location> task) {
                             if (task.isSuccessful() && task.getResult() != null) {
+                                task.getResult();
                                 mLocation = task.getResult();
                             } else {
                                 Log.w(TAG, "Failed to get location.");

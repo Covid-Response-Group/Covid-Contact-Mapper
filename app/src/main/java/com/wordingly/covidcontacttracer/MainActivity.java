@@ -35,12 +35,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.wordingly.covidcontacttracer.utils.DataObject;
 import com.wordingly.covidcontacttracer.utils.Prefs;
 import com.wordingly.covidcontacttracer.utils.Utils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener{
     GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 8476;
+    private DatabaseReference mDatabase;
     private static final int PERMISSION_FINE_LOCATION = 8477;
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -65,11 +72,24 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         public void onReceive(Context context, Intent intent) {
             Location location = intent.getParcelableExtra(LocationUpdatesService.EXTRA_LOCATION);
             if (location != null) {
-                Toast.makeText(MainActivity.this, Utils.getLocationText(location),
+                if (Prefs.getGoogleAccountId() != null) {
+                    updateLocation(Utils.getLocationText(location));
+                }
+                Toast.makeText(MainActivity.this, Utils.getLocationText(location)+"-"+location.getAccuracy(),
                         Toast.LENGTH_SHORT).show();
             }
         }
     }
+
+    public void updateLocation(String location) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+        DatabaseReference locationRef = ref.child("timestamps").child(Prefs.getGoogleAccountId()).push();
+        Map<String, Object> user = new HashMap<>();
+        user.put(String.valueOf(System.currentTimeMillis()), location);
+        locationRef.setValue(user);
+    }
+
 
 
     // Monitors the state of the connection to the service.
@@ -96,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myReceiver = new MyReceiver();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         setupGoogleSignIn();
         findViewById(R.id.btn_google_signin).setOnClickListener(this);
 
@@ -224,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
+            Prefs.setGoogleAccountId(account.getId());
             // Signed in successfully, show authenticated UI.
             updateUI(account);
         } catch (ApiException e) {
