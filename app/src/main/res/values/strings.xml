@@ -13,4 +13,7 @@
     <string name="location_permission_message">We need to access your device location in order to track your proximity to the COVID infected people and to warn you if one of your close contacts has got COVID.</string>
     <string name="location_updated">Location Updated: %1$s</string>
     <string name="info_msg">Please DO NOT revoke the permissions for this app. We need to calculate your location accurately and in case of possible vulnerability, we will inform you over email. We anonymously analyse location data and when a person is reported to be infected, we notify his\/her close connections for possibility of infection. Over next week, we will update the app to add more features.</string>
+    <string name="info_msg_btloc">Please DO NOT revoke the permissions for this app. We track your location and devices around you to find out if you were in close contact with an infected person. We will notify you over email and in the app if you are vulnerable. We will add more dashboards with data views./\nPlease practice social distancing and wash your hands frequently.</string>
+    <string name="risk_header">Your Risk Level</string>
+    <string name="risk_value">LOW</string>
 </resources>
