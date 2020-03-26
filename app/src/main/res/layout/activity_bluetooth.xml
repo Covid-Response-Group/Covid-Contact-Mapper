@@ -22,28 +22,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12sp"
-            android:textSize="16sp"
-            android:textColor="@color/cardview_light_background"
-            android:text="@string/info_msg" />
+            android:text="@string/info_msg"
+            android:textColor="@android:color/background_light"
+            android:textSize="16sp" />
+
         <TextView
             android:id="@+id/tv_risk_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:paddingLeft="12sp"
             android:paddingRight="12sp"
-            android:textSize="36sp"
-            android:gravity="center"
-            android:textColor="@color/cardview_light_background"
-            android:text="@string/risk_header" />
+            android:text="@string/risk_header"
+            android:textColor="@android:color/background_light"
+            android:textSize="36sp" />
+
         <TextView
             android:id="@+id/tv_risk_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:paddingLeft="12sp"
             android:paddingRight="12sp"
-            android:textSize="36sp"
-            android:gravity="center"
-            android:textColor="@color/cardview_light_background"
-            android:text="@string/risk_value" />
+            android:text="@string/risk_value"
+            android:textColor="@android:color/background_light"
+            android:textSize="36sp" />
+
+        <Button
+            android:id="@+id/start_foreground_service_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="start" />
+
+        <Button
+            android:id="@+id/stop_foreground_service_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="stop" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

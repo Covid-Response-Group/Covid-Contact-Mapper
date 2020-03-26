@@ -9,16 +9,13 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.IBinder;
 import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -52,7 +49,7 @@ import com.wordingly.covidcontacttracer.utils.Utils;
 public class LocationUpdatesService extends Service {
 
     private static final String PACKAGE_NAME =
-            "com.google.android.gms.location.sample.locationupdatesforegroundservice";
+            "com.wordingly.covidcontacttracer";
 
     private static final String TAG = LocationUpdatesService.class.getSimpleName();
 
@@ -67,7 +64,7 @@ public class LocationUpdatesService extends Service {
     private static final String EXTRA_STARTED_FROM_NOTIFICATION = PACKAGE_NAME +
             ".started_from_notification";
 
-    private final IBinder mBinder = new LocalBinder();
+    private final IBinder mBinder = new LocationServiceBinder();
 
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
@@ -164,7 +161,7 @@ public class LocationUpdatesService extends Service {
             stopSelf();
         }
 
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -336,7 +333,7 @@ public class LocationUpdatesService extends Service {
      * Class used for the client Binder.  Since this service runs in the same process as its
      * clients, we don't need to deal with IPC.
      */
-    public class LocalBinder extends Binder {
+    public class LocationServiceBinder extends Binder {
         LocationUpdatesService getService() {
             return LocationUpdatesService.this;
         }

@@ -1,21 +1,17 @@
 package com.wordingly.covidcontacttracer;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +21,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -37,7 +32,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.wordingly.covidcontacttracer.utils.DataObject;
 import com.wordingly.covidcontacttracer.utils.Prefs;
 import com.wordingly.covidcontacttracer.utils.Utils;
 
@@ -97,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            LocationUpdatesService.LocalBinder binder = (LocationUpdatesService.LocalBinder) service;
+            LocationUpdatesService.LocationServiceBinder binder = (LocationUpdatesService.LocationServiceBinder) service;
             mService = binder.getService();
             mBound = true;
         }
