@@ -1,5 +1,6 @@
 # Covid-Contact-Tracer
 Remaining tasks
+- [ ] Logic to randomly start scan so that there is never complete overlap between scanning times of two nearby devices.
 - [ ] User BT Address-email sync
 - [ ] Start scan when location changes significantly
 - [ ] Store last location in prefs only when significant change
