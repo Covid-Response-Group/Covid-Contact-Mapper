@@ -1,7 +1,11 @@
 package com.wordingly.covidcontacttracer;
 
 import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.IBinder;
 
 import android.app.ActivityManager;
@@ -32,30 +36,28 @@ import com.google.android.gms.tasks.Task;
 import com.wordingly.covidcontacttracer.utils.Prefs;
 import com.wordingly.covidcontacttracer.utils.Utils;
 
-/**
- * A bound and started service that is promoted to a foreground service when location updates have
- * been requested and all clients unbind.
- *
- * For apps running in the background on "O" devices, location is computed only once every 10
- * minutes and delivered batched every 30 minutes. This restriction applies even to apps
- * targeting "N" or lower which are run on "O" devices.
- *
- * This sample show how to use a long-running service for location updates. When an activity is
- * bound to this service, frequent location updates are permitted. When the activity is removed
- * from the foreground, the service promotes itself to a foreground service, and location updates
- * continue. When the activity comes back to the foreground, the foreground service stops, and the
- * notification associated with that service is removed.
- */
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+
 public class LocationUpdatesService extends Service {
+
+
+    BluetoothAdapter mBluetoothAdapter = null;
+
+
+
+    private List<BluetoothDevice> mTargetDevices = new ArrayList<>();
+
 
     private static final String PACKAGE_NAME =
             "com.wordingly.covidcontacttracer";
 
     private static final String TAG = LocationUpdatesService.class.getSimpleName();
 
-    /**
-     * The name of the channel for notifications.
-     */
+
     private static final String CHANNEL_ID = "channel_01";
 
     static final String ACTION_BROADCAST = PACKAGE_NAME + ".broadcast";
@@ -69,7 +71,7 @@ public class LocationUpdatesService extends Service {
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 20000;
 
     /**
      * The fastest rate for active location updates. Updates will never be more frequent
@@ -81,7 +83,7 @@ public class LocationUpdatesService extends Service {
     /**
      * The identifier for the notification displayed for the foreground service.
      */
-    private static final int NOTIFICATION_ID = 12345678;
+    private static final int NOTIFICATION_ID = 1347;
 
     /**
      * Used to check whether the bound activity has really gone away and not unbound as part of an
@@ -132,19 +134,36 @@ public class LocationUpdatesService extends Service {
         createLocationRequest();
         getLastLocation();
 
+        //BT////////////////////////////////////////
+
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
+            Log.d(TAG, "BT not supported..");
+            return;
+        }
+
+        if(!mBluetoothAdapter.isEnabled()){
+            Log.d(TAG, "BT enable.");
+            mBluetoothAdapter.enable();
+        }
+        else{
+            Log.d(TAG, "BT already enabled.");
+        }
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(mReceiver, filter);
+        /////////////////////////////////////////////
+
         HandlerThread handlerThread = new HandlerThread(TAG);
         handlerThread.start();
         mServiceHandler = new Handler(handlerThread.getLooper());
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        // Android O requires a Notification Channel.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.app_name);
-            // Create the channel for the notification
             NotificationChannel mChannel =
                     new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
 
-            // Set the Notification Channel for the Notification Manager.
             mNotificationManager.createNotificationChannel(mChannel);
         }
     }
@@ -164,6 +183,19 @@ public class LocationUpdatesService extends Service {
         return START_NOT_STICKY;
     }
 
+    private void startDiscovery() {
+        Log.d(TAG, "startDiscovery");
+        if (mBluetoothAdapter != null) {
+            mTargetDevices.clear();
+
+            Log.d(TAG, "request BT startDiscovery");
+            mBluetoothAdapter.startDiscovery();
+        } else {
+            Log.d(TAG, "mBluetoothAdapter!=null");
+        }
+    }
+
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -172,7 +204,7 @@ public class LocationUpdatesService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // Called when a client (MainActivity in case of this sample) comes to the foreground
+        // Called when a client (MainActivity in this case) comes to the foreground
         // and binds with this service. The service should cease to be a foreground service
         // when that happens.
         Log.i(TAG, "in onBind()");
@@ -183,7 +215,7 @@ public class LocationUpdatesService extends Service {
 
     @Override
     public void onRebind(Intent intent) {
-        // Called when a client (MainActivity in case of this sample) returns to the foreground
+        // Called when a client (MainActivity in this case) returns to the foreground
         // and binds once again with this service. The service should cease to be a foreground
         // service when that happens.
         Log.i(TAG, "in onRebind()");
@@ -196,10 +228,10 @@ public class LocationUpdatesService extends Service {
     public boolean onUnbind(Intent intent) {
         Log.i(TAG, "Last client unbound from service");
 
-        // Called when the last client (MainActivity in case of this sample) unbinds from this
+        // Called when the last client (MainActivity in this case) unbinds from this
         // service. If this method is called due to a configuration change in MainActivity, we
         // do nothing. Otherwise, we make this service a foreground service.
-        if (!mChangingConfiguration && Prefs.requestingLocationUpdates(this)) {
+        if (!mChangingConfiguration) {
             Log.i(TAG, "Starting foreground service");
 
             startForeground(NOTIFICATION_ID, getNotification());
@@ -210,6 +242,7 @@ public class LocationUpdatesService extends Service {
     @Override
     public void onDestroy() {
         mServiceHandler.removeCallbacksAndMessages(null);
+        unregisterReceiver(mReceiver);
     }
 
     /**
@@ -229,11 +262,10 @@ public class LocationUpdatesService extends Service {
         }
     }
 
-    /**
-     * Removes location updates. Note that in this sample we merely log the
-     * {@link SecurityException}.
-     */
+
     public void removeLocationUpdates() {
+
+        // Code for removing to be added
         Log.i(TAG, "Removing location updates");
         try {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
@@ -308,6 +340,7 @@ public class LocationUpdatesService extends Service {
 
         mLocation = location;
 
+        startDiscovery();
         // Notify anyone listening for broadcasts about the new location.
         Intent intent = new Intent(ACTION_BROADCAST);
         intent.putExtra(EXTRA_LOCATION, location);
@@ -318,6 +351,7 @@ public class LocationUpdatesService extends Service {
             mNotificationManager.notify(NOTIFICATION_ID, getNotification());
         }
     }
+
 
     /**
      * Sets the location request parameters.
@@ -357,4 +391,22 @@ public class LocationUpdatesService extends Service {
         }
         return false;
     }
+
+
+    BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            switch (action) {
+                case BluetoothDevice.ACTION_FOUND:
+                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    int  rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
+                    if (device.getName() != null) {
+                        Log.d(TAG, "ACTION_FOUND: " + device.getName()+"__"+rssi);
+                    }
+                    break;
+            }
+        }
+    };
 }
