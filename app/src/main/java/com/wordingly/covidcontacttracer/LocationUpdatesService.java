@@ -3,6 +3,8 @@ package com.wordingly.covidcontacttracer;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -137,6 +139,7 @@ public class LocationUpdatesService extends Service {
         //BT////////////////////////////////////////
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
         if (mBluetoothAdapter == null) {
             Log.d(TAG, "BT not supported..");
             return;
