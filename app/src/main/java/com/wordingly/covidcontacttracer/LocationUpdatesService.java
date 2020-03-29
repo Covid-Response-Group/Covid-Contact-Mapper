@@ -343,9 +343,18 @@ public class LocationUpdatesService extends Service {
         Log.i(TAG, "New location: " + location);
 
         mLocation = location;
-
-        startDiscovery();
+        // notifyLocationChange(location);
+        if (Utils.didLocationChangeSignificantly(Utils.SIGNIFICANT_DIST, mLocation) || Utils.getTimeFromLastScan() > 2*60*1000) {
+            startDiscovery();
+            notifyLocationChange(location);
+        } else {
+            Log.i(TAG, "NOT LOGGING");
+        }
         // Notify anyone listening for broadcasts about the new location.
+
+    }
+
+    private void notifyLocationChange(Location location) {
         Intent intent = new Intent(ACTION_BROADCAST);
         intent.putExtra(EXTRA_LOCATION, location);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
