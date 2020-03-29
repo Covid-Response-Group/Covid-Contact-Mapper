@@ -87,6 +87,11 @@ public class HomeActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             LocationUpdatesService.LocationServiceBinder binder = (LocationUpdatesService.LocationServiceBinder) service;
             mService = binder.getService();
+            if (!ifPermissionsGranted()) {
+                requestPermissions();
+            } else {
+                mService.requestLocationUpdates();
+            }
             mBound = true;
         }
 
@@ -121,11 +126,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
 
         //Needs to be reviewed, throwing error
-//        if (!ifPermissionsGranted()) {
-//            requestPermissions();
-//        } else {
-//            mService.requestLocationUpdates();
-//        }
+
         bindService(new Intent(this, LocationUpdatesService.class), mServiceConnection,
                 Context.BIND_AUTO_CREATE);
 

@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 
 public class LocationUpdatesService extends Service {
@@ -183,7 +184,7 @@ public class LocationUpdatesService extends Service {
             stopSelf();
         }
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     private void startDiscovery() {
@@ -343,13 +344,15 @@ public class LocationUpdatesService extends Service {
         Log.i(TAG, "New location: " + location);
 
         mLocation = location;
-        // notifyLocationChange(location);
-        if (Utils.didLocationChangeSignificantly(Utils.SIGNIFICANT_DIST, mLocation) || Utils.getTimeFromLastScan() > 2*60*1000) {
-            startDiscovery();
-            notifyLocationChange(location);
-        } else {
-            Log.i(TAG, "NOT LOGGING");
-        }
+        boolean comp = Utils.getTimeFromLastScan() > 2*60*1000;
+        Log.i(TAG, String.valueOf(Utils.getTimeFromLastScan())+"  "+comp+"  "+Utils.didLocationChangeSignificantly(Utils.SIGNIFICANT_DIST, mLocation));
+         notifyLocationChange(location);
+//        if (Utils.didLocationChangeSignificantly(Utils.SIGNIFICANT_DIST, mLocation) && Utils.getTimeFromLastScan() > 2*60*1000l) {
+//            startDiscovery();
+//            notifyLocationChange(location);
+//        } else {
+//            Log.i(TAG, "NOT LOGGING");
+//        }
         // Notify anyone listening for broadcasts about the new location.
 
     }
@@ -414,9 +417,10 @@ public class LocationUpdatesService extends Service {
             switch (action) {
                 case BluetoothDevice.ACTION_FOUND:
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
                     int  rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
                     if (device.getName() != null) {
-                        Log.d(TAG, "ACTION_FOUND: " + device.getName()+"__"+rssi);
+                        Log.d(TAG, "ACTION_FOUND: " + device.getName()+"__"+ device.getAddress()+"__"+rssi);
                     }
                     break;
             }
