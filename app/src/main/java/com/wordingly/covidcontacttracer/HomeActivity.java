@@ -53,12 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         myReceiver = new MyReceiver();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        // Check that the user hasn't revoked permissions by going to Settings.
-        if (Prefs.requestingLocationUpdates(this)) {
-            if (!ifPermissionsGranted()) {
-                requestPermissions();
-            }
-        }
+
     }
 
     private class MyReceiver extends BroadcastReceiver {
@@ -106,11 +101,12 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        // Check that the user hasn't revoked permissions by going to Settings.
         LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,
                 new IntentFilter(LocationUpdatesService.ACTION_BROADCAST));
         if (!ifPermissionsGranted()) {
             requestPermissions();
+
         }
     }
 
@@ -124,6 +120,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        //Needs to be reviewed, throwing error
+//        if (!ifPermissionsGranted()) {
+//            requestPermissions();
+//        } else {
+//            mService.requestLocationUpdates();
+//        }
         bindService(new Intent(this, LocationUpdatesService.class), mServiceConnection,
                 Context.BIND_AUTO_CREATE);
 
