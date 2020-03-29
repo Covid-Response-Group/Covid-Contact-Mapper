@@ -3,6 +3,7 @@ package com.wordingly.covidcontacttracer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
@@ -127,10 +128,19 @@ public class HomeActivity extends AppCompatActivity {
 
         //Needs to be reviewed, throwing error
 
-        bindService(new Intent(this, LocationUpdatesService.class), mServiceConnection,
-                Context.BIND_AUTO_CREATE);
+//        bindService(new Intent(this, LocationUpdatesService.class), mServiceConnection,
+//                Context.BIND_AUTO_CREATE);
+
+        startService();
 
     }
+
+    public void startService() {
+        Intent serviceIntent = new Intent(this, LocationUpdatesService.class);
+        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
+        ContextCompat.startForegroundService(this, serviceIntent);
+    }
+
 
     @Override
     protected void onStop() {

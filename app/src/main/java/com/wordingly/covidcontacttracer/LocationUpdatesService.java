@@ -172,20 +172,32 @@ public class LocationUpdatesService extends Service {
         }
     }
 
+//    @Override
+//    public int onStartCommand(Intent intent, int flags, int startId) {
+//        Log.i(TAG, "Service started");
+//        boolean startedFromNotification = intent.getBooleanExtra(EXTRA_STARTED_FROM_NOTIFICATION,
+//                false);
+//
+//        // We got here because the user decided to remove location updates from the notification.
+//        if (startedFromNotification) {
+//            removeLocationUpdates();
+//            stopSelf();
+//        }
+//
+//        return START_STICKY;
+//    }
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "Service started");
-        boolean startedFromNotification = intent.getBooleanExtra(EXTRA_STARTED_FROM_NOTIFICATION,
-                false);
 
-        // We got here because the user decided to remove location updates from the notification.
-        if (startedFromNotification) {
-            removeLocationUpdates();
-            stopSelf();
-        }
-
-        return START_STICKY;
+        Notification notification = getNotification();
+        startForeground(1, notification);
+        //do heavy work on a background thread
+        //stopSelf();
+        return START_NOT_STICKY;
     }
+
 
     private void startDiscovery() {
         Log.d(TAG, "startDiscovery");
