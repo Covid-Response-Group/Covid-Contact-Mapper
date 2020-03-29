@@ -1,8 +1,8 @@
-package com.wordingly.covidcontacttracer;
+package com.covidresponse.covidcontacttracer;
 
 import android.app.Application;
 
-import com.wordingly.covidcontacttracer.utils.Prefs;
+import com.covidresponse.covidcontacttracer.utils.Prefs;
 
 public class CovidContactTracer extends Application {
 

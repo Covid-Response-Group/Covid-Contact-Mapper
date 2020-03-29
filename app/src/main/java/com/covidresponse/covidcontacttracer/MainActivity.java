@@ -1,4 +1,4 @@
-package com.wordingly.covidcontacttracer;
+package com.covidresponse.covidcontacttracer;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -32,8 +32,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.wordingly.covidcontacttracer.utils.Prefs;
-import com.wordingly.covidcontacttracer.utils.Utils;
+import com.covidresponse.covidcontacttracer.utils.Prefs;
+import com.covidresponse.covidcontacttracer.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;

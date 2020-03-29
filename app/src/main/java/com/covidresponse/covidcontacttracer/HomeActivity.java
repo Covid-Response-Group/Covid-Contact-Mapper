@@ -1,4 +1,4 @@
-package com.wordingly.covidcontacttracer;
+package com.covidresponse.covidcontacttracer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,8 +25,8 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.wordingly.covidcontacttracer.utils.Prefs;
-import com.wordingly.covidcontacttracer.utils.Utils;
+import com.covidresponse.covidcontacttracer.utils.Prefs;
+import com.covidresponse.covidcontacttracer.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;

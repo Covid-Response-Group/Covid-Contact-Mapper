@@ -1,4 +1,4 @@
-package com.wordingly.covidcontacttracer;
+package com.covidresponse.covidcontacttracer;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -35,8 +35,8 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.wordingly.covidcontacttracer.utils.Prefs;
-import com.wordingly.covidcontacttracer.utils.Utils;
+import com.covidresponse.covidcontacttracer.utils.Prefs;
+import com.covidresponse.covidcontacttracer.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -55,7 +55,7 @@ public class LocationUpdatesService extends Service {
 
 
     private static final String PACKAGE_NAME =
-            "com.wordingly.covidcontacttracer";
+            "com.covidresponse.covidcontacttracer";
 
     private static final String TAG = LocationUpdatesService.class.getSimpleName();
 

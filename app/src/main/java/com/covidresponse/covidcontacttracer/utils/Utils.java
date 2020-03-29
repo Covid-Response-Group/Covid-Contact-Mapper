@@ -1,9 +1,9 @@
-package com.wordingly.covidcontacttracer.utils;
+package com.covidresponse.covidcontacttracer.utils;
 
 import android.content.Context;
 import android.location.Location;
 
-import com.wordingly.covidcontacttracer.R;
+import com.covidresponse.covidcontacttracer.R;
 
 import java.text.DateFormat;
 import java.util.Date;

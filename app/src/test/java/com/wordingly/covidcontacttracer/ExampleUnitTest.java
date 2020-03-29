@@ -1,4 +1,4 @@
-package com.wordingly.covidcontacttracer;
+package com.covidresponse.covidcontacttracer;
 
 import org.junit.Test;
 
