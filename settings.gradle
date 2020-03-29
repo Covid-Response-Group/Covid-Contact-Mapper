@@ -1,2 +1,4 @@
 include ':app'
 rootProject.name='Covid Contact Tracer'
+include ':contactbaseClient'
+project(':contactbaseClient').projectDir = new File(settingsDir, './app/contactbase-client')
