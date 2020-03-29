@@ -234,7 +234,7 @@ public class LocationUpdatesService extends Service {
         // Called when the last client (MainActivity in this case) unbinds from this
         // service. If this method is called due to a configuration change in MainActivity, we
         // do nothing. Otherwise, we make this service a foreground service.
-        if (!mChangingConfiguration) {
+        if (!mChangingConfiguration  && Prefs.requestingLocationUpdates(this)) {
             Log.i(TAG, "Starting foreground service");
 
             startForeground(NOTIFICATION_ID, getNotification());
@@ -287,6 +287,7 @@ public class LocationUpdatesService extends Service {
         Intent intent = new Intent(this, LocationUpdatesService.class);
 
         CharSequence text = Utils.getLocationText(mLocation);
+        if (mLocation != null) {text = text + " -- Acc: -- "+mLocation.getAccuracy();}
 
         // Extra to help us figure out if we arrived in onStartCommand via the notification or not.
         intent.putExtra(EXTRA_STARTED_FROM_NOTIFICATION, true);
@@ -297,7 +298,7 @@ public class LocationUpdatesService extends Service {
 
         // The PendingIntent to launch activity.
         PendingIntent activityPendingIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);
+                new Intent(this, HomeActivity.class), 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .addAction(R.drawable.ic_launch, getString(R.string.launch_activity),
@@ -307,7 +308,7 @@ public class LocationUpdatesService extends Service {
                 .setOngoing(true)
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setTicker(text + "-"+ mLocation.getAccuracy())
+                .setTicker(text)
                 .setWhen(System.currentTimeMillis());
 
         // Set the Channel ID for Android O.

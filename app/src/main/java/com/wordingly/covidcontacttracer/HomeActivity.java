@@ -53,6 +53,12 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         myReceiver = new MyReceiver();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        // Check that the user hasn't revoked permissions by going to Settings.
+        if (Prefs.requestingLocationUpdates(this)) {
+            if (!ifPermissionsGranted()) {
+                requestPermissions();
+            }
+        }
     }
 
     private class MyReceiver extends BroadcastReceiver {
@@ -145,7 +151,7 @@ public class HomeActivity extends AppCompatActivity {
         if (shouldProvideRationale) {
             Log.i(TAG, "Displaying permission rationale to provide additional context.");
             Snackbar.make(
-                    findViewById(R.id.parent),
+                    findViewById(R.id.ll_bt_parent),
                     R.string.permission_rationale,
                     Snackbar.LENGTH_INDEFINITE)
                     .setAction(R.string.ok, new View.OnClickListener() {
@@ -194,7 +200,7 @@ public class HomeActivity extends AppCompatActivity {
                 // Permission denied.
                 //setButtonsState(false);
                 Snackbar.make(
-                        findViewById(R.id.parent),
+                        findViewById(R.id.ll_bt_parent),
                         R.string.permission_denied_explanation,
                         Snackbar.LENGTH_INDEFINITE)
                         .setAction(R.string.settings, new View.OnClickListener() {

@@ -48,12 +48,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (!isSignedIn()) {
-            setupGoogleSignIn();
-        } else {
 
-            updateUI(GoogleSignIn.getLastSignedInAccount(this));
-        }
 
         findViewById(R.id.btn_google_signin).setOnClickListener(this);
     }
@@ -136,6 +131,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isSignedIn()) {
+            setupGoogleSignIn();
+        } else {
 
-
+            updateUI(GoogleSignIn.getLastSignedInAccount(this));
+        }
+    }
 }
