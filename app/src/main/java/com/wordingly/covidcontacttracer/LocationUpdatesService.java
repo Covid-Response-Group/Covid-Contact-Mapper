@@ -3,8 +3,6 @@ package com.wordingly.covidcontacttracer;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -25,6 +23,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -39,10 +38,7 @@ import com.wordingly.covidcontacttracer.utils.Prefs;
 import com.wordingly.covidcontacttracer.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 
 public class LocationUpdatesService extends Service {
@@ -190,12 +186,18 @@ public class LocationUpdatesService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        try {
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest,
+                    mLocationCallback, Looper.myLooper());
+        } catch (SecurityException unlikely) {
+            Prefs.setRequestingLocationUpdates(false);
+            Log.e(TAG, "Lost location permission. Could not request updates. " + unlikely);
+        }
         Notification notification = getNotification();
         startForeground(1, notification);
         //do heavy work on a background thread
         //stopSelf();
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
 
@@ -268,7 +270,7 @@ public class LocationUpdatesService extends Service {
     public void requestLocationUpdates() {
         Log.i(TAG, "Requesting location updates");
         Prefs.setRequestingLocationUpdates(true);
-        startService(new Intent(getApplicationContext(), LocationUpdatesService.class));
+        ContextCompat.startForegroundService(this, new Intent(getApplicationContext(), LocationUpdatesService.class));
         try {
             mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                     mLocationCallback, Looper.myLooper());
@@ -311,7 +313,7 @@ public class LocationUpdatesService extends Service {
 
         // The PendingIntent to launch activity.
         PendingIntent activityPendingIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, HomeActivity.class), 0);
+                new Intent(this, ProfileActivity.class), 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .addAction(R.drawable.ic_launch, getString(R.string.launch_activity),

@@ -22,8 +22,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".StatsActivity"></activity>
+        <activity android:name=".NewsActivity" />
+        <activity android:name=".TravelTrackActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".ProfileActivity" />
 
         <service
             android:name=".LocationUpdatesService"
@@ -31,7 +34,7 @@
             android:exported="true"
             android:foregroundServiceType="location" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
