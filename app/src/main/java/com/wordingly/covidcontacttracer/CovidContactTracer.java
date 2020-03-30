@@ -4,6 +4,9 @@ import android.app.Application;
 
 import com.wordingly.covidcontacttracer.utils.Prefs;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class CovidContactTracer extends Application {
 
     public static final String TAG = CovidContactTracer.class.getSimpleName();
@@ -12,7 +15,18 @@ public class CovidContactTracer extends Application {
     public void onCreate() {
         super.onCreate();
         Prefs.init(this);
+        initRealm();
         mInstance = this;
+    }
+
+    private void initRealm() {
+        Realm.init(this);
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
+                .name(Realm.DEFAULT_REALM_NAME)
+                .schemaVersion(1)
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(realmConfiguration);
     }
 
 

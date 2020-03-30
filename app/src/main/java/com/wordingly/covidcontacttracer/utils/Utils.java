@@ -3,7 +3,15 @@ package com.wordingly.covidcontacttracer.utils;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
+import android.text.Html;
+import android.text.Spanned;
 
+import androidx.annotation.NonNull;
+
+import com.wordingly.covidcontacttracer.CovidContactTracer;
 import com.wordingly.covidcontacttracer.R;
 
 import java.text.DateFormat;
@@ -84,4 +92,30 @@ public class Utils {
     public static long getTimeFromLastScan() {
         return System.currentTimeMillis() - Prefs.getLastScanTime();
     }
+
+
+    public static boolean isNetworkAvailable() {
+        ConnectivityManager
+                cm = (ConnectivityManager) CovidContactTracer.getInstance().getApplicationContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        if (activeNetwork == null) {
+            return false;
+        } else if (activeNetwork.isConnected()) {
+            return true;
+        }
+        return false;
+    }
+
+    @NonNull
+    public static Spanned fromHtml(@NonNull String source) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(source, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            return Html.fromHtml(source);
+        }
+    }
+
+
 }

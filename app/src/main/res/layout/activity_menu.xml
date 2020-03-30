@@ -8,9 +8,10 @@
     tools:context=".MenuActivity">
 
     <LinearLayout
+        android:id="@+id/ll_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/estimote_back"
+        android:background="@color/cardview_light_background"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,7 +23,6 @@
             android:id="@+id/ll_r1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/estimote_back"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="15dp">
@@ -42,7 +42,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/estimote_button"
+                    android:background="@color/estimote_purple"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -81,7 +81,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/estimote_button"
+                    android:background="@color/estimote_purple"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -130,7 +130,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/estimote_button"
+                    android:background="@color/estimote_purple"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="2dp">
@@ -171,7 +171,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/estimote_button"
+                    android:background="@color/estimote_purple"
                     android:gravity="center"
                     android:orientation="vertical">
 

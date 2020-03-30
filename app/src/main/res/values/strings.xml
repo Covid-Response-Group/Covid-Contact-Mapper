@@ -13,4 +13,6 @@
     <string name="contacts_header">Your close contacts</string>
 
     <string name="risk_value">LOW</string>
+    <string name="read_duration">2 mins read</string>
+    <string name="no_posts">No Posts</string>
 </resources>

@@ -10,20 +10,15 @@
         android:id="@+id/ll_bt_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/background_dark"
+        android:background="@color/estimote_purple"
         android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12sp"
-            android:text="@string/info_msg"
-            android:textColor="@android:color/background_light"
-            android:textSize="16sp" />
+
 
         <TextView
             android:layout_width="match_parent"
@@ -36,6 +31,7 @@
             android:textSize="36sp" />
 
         <TextView
+            android:id="@+id/tv_risk_score"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -56,6 +52,7 @@
             android:textSize="36sp" />
 
         <TextView
+            android:id="@+id/tv_contact_score"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

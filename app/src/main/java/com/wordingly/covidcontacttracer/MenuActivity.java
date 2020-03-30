@@ -1,12 +1,18 @@
 package com.wordingly.covidcontacttracer;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -15,14 +21,22 @@ import android.view.View;
 
 import com.google.android.material.snackbar.Snackbar;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private static final String TAG = MenuActivity.class.getSimpleName();
 
+    CardView cvProfile, cvTravelRecord, cvNews, cvStats;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        setupActionBar();
+    }
+
+    private void setupActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Contact Tracer App");
+        actionBar.setSubtitle("Menu");
     }
 
     @Override
@@ -30,9 +44,40 @@ public class MenuActivity extends AppCompatActivity {
         super.onResume();
         if (!ifPermissionsGranted()) {
             requestPermissions();
-
+        } else {
+            setupViews();
         }
     }
+
+    private void setupViews() {
+        cvProfile = findViewById(R.id.cv_profile);
+        cvTravelRecord = findViewById(R.id.cv_travel_record);
+        cvNews = findViewById(R.id.cv_news);
+        cvStats = findViewById(R.id.cv_stats);
+        cvProfile.setOnClickListener(this);
+        cvTravelRecord.setOnClickListener(this);
+        cvNews.setOnClickListener(this);
+        cvStats.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.cv_profile:
+                startActivity(new Intent(this, ProfileActivity.class));
+                break;
+            case R.id.cv_travel_record:
+                startActivity(new Intent(this, TravelTrackActivity.class));
+                break;
+            case R.id.cv_news:
+                startActivity(new Intent(this, NewsActivity.class));
+                break;
+            case R.id.cv_stats:
+                startActivity(new Intent(this, StatsActivity.class));
+                break;
+        }
+    }
+
 
     private void requestPermissions() {
         boolean shouldProvideRationale =
@@ -43,7 +88,7 @@ public class MenuActivity extends AppCompatActivity {
         if (shouldProvideRationale) {
             Log.i(TAG, "Displaying permission rationale to provide additional context.");
             Snackbar.make(
-                    findViewById(R.id.ll_bt_parent),
+                    findViewById(R.id.ll_parent),
                     R.string.permission_rationale,
                     Snackbar.LENGTH_INDEFINITE)
                     .setAction(R.string.ok, new View.OnClickListener() {
@@ -87,7 +132,7 @@ public class MenuActivity extends AppCompatActivity {
                 Log.i(TAG, "User interaction was cancelled.");
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission was granted.
-                //mService.requestLocationUpdates();
+                setupViews();
             } else {
                 // Permission denied.
                 //setButtonsState(false);
@@ -113,4 +158,6 @@ public class MenuActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }

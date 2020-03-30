@@ -1,6 +1,7 @@
 package com.wordingly.covidcontacttracer;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -54,8 +55,15 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         myReceiver = new MyReceiver();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
+        setupActionBar();
     }
+
+    private void setupActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Contact Tracer App");
+        actionBar.setSubtitle("Profile");
+    }
+
 
     private class MyReceiver extends BroadcastReceiver {
         @Override
