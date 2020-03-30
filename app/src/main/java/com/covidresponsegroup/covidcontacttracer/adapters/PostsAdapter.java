@@ -1,4 +1,4 @@
-package com.wordingly.covidcontacttracer.adapters;
+package com.covidresponsegroup.covidcontacttracer.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.wordingly.covidcontacttracer.PostDetailsActivity;
-import com.wordingly.covidcontacttracer.R;
-import com.wordingly.covidcontacttracer.WebPageActivity;
-import com.wordingly.covidcontacttracer.objects.Posts;
+import com.covidresponsegroup.covidcontacttracer.PostDetailsActivity;
+import com.covidresponsegroup.covidcontacttracer.R;
+import com.covidresponsegroup.covidcontacttracer.WebPageActivity;
+import com.covidresponsegroup.covidcontacttracer.objects.Posts;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;

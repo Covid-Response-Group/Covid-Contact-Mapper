@@ -1,4 +1,4 @@
-package com.wordingly.covidcontacttracer.objects;
+package com.covidresponsegroup.covidcontacttracer.objects;
 
 import com.google.gson.annotations.SerializedName;
 

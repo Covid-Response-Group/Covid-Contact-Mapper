@@ -1,4 +1,4 @@
-package com.wordingly.covidcontacttracer.utils;
+package com.covidresponsegroup.covidcontacttracer.utils;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -11,8 +11,8 @@ import android.text.Spanned;
 
 import androidx.annotation.NonNull;
 
-import com.wordingly.covidcontacttracer.CovidContactTracer;
-import com.wordingly.covidcontacttracer.R;
+import com.covidresponsegroup.covidcontacttracer.CovidContactTracer;
+import com.covidresponsegroup.covidcontacttracer.R;
 
 import java.text.DateFormat;
 import java.util.Date;

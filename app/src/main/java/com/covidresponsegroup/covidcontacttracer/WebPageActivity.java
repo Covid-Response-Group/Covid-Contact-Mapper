@@ -1,4 +1,4 @@
-package com.wordingly.covidcontacttracer;
+package com.covidresponsegroup.covidcontacttracer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,13 +10,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.wordingly.covidcontacttracer.utils.Utils;
+import com.covidresponsegroup.covidcontacttracer.utils.Utils;
 
 
 public class WebPageActivity extends AppCompatActivity {

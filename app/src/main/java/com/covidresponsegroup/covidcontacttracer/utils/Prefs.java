@@ -1,10 +1,10 @@
-package com.wordingly.covidcontacttracer.utils;
+package com.covidresponsegroup.covidcontacttracer.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 
-import com.wordingly.covidcontacttracer.CovidContactTracer;
+import com.covidresponsegroup.covidcontacttracer.CovidContactTracer;
 
 public class Prefs {
 
