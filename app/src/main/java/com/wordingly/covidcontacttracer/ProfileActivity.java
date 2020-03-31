@@ -1,25 +1,34 @@
-package com.covidresponsegroup.covidcontacttracer;
+package com.wordingly.covidcontacttracer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.covidresponsegroup.covidcontacttracer.utils.Prefs;
-import com.covidresponsegroup.covidcontacttracer.utils.Utils;
+import com.wordingly.covidcontacttracer.utils.Prefs;
+import com.wordingly.covidcontacttracer.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;

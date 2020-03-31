@@ -1,4 +1,4 @@
-package com.covidresponsegroup.covidcontacttracer.utils;
+package com.wordingly.covidcontacttracer.utils;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 

@@ -1,4 +1,4 @@
-package com.covidresponsegroup.covidcontacttracer;
+package com.wordingly.covidcontacttracer;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;

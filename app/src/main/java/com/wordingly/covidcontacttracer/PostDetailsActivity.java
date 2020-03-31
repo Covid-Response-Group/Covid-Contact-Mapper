@@ -1,4 +1,4 @@
-package com.covidresponsegroup.covidcontacttracer;
+package com.wordingly.covidcontacttracer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.covidresponsegroup.covidcontacttracer.utils.Utils;
+import com.wordingly.covidcontacttracer.utils.Utils;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 

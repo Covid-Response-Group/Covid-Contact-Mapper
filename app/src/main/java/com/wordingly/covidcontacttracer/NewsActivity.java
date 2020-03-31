@@ -1,8 +1,9 @@
-package com.covidresponsegroup.covidcontacttracer;
+package com.wordingly.covidcontacttracer;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,9 +15,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import com.covidresponsegroup.covidcontacttracer.adapters.PostsAdapter;
-import com.covidresponsegroup.covidcontacttracer.objects.Posts;
-import com.covidresponsegroup.covidcontacttracer.utils.Utils;
+import com.wordingly.covidcontacttracer.adapters.PostsAdapter;
+import com.wordingly.covidcontacttracer.objects.Posts;
+import com.wordingly.covidcontacttracer.utils.Utils;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;

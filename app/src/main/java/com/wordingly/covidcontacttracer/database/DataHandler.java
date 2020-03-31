@@ -1,4 +1,4 @@
-package com.covidresponsegroup.covidcontacttracer.database;
+package com.wordingly.covidcontacttracer.database;
 
 import android.app.Activity;
 import android.app.Application;

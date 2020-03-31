@@ -1,8 +1,8 @@
-package com.covidresponsegroup.covidcontacttracer;
+package com.wordingly.covidcontacttracer;
 
 import android.app.Application;
 
-import com.covidresponsegroup.covidcontacttracer.utils.Prefs;
+import com.wordingly.covidcontacttracer.utils.Prefs;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
