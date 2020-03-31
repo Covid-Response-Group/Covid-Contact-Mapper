@@ -25,7 +25,6 @@
             android:importantForAutofill="no"
             android:hint="@string/hint_flight_number"
             android:inputType="text"
-            android:maxLength="1"
             android:padding="@dimen/et_padding"
             android:textColorHint="@color/md_grey_300"
             android:textSize="32sp" />
@@ -51,7 +50,6 @@
             android:importantForAutofill="no"
             android:hint="@string/hint_seat_number"
             android:inputType="text"
-            android:maxLength="1"
             android:padding="@dimen/et_padding"
             android:textColorHint="@color/md_grey_300"
             android:textSize="32sp" />

@@ -5,21 +5,46 @@
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:orientation="vertical">
-        <include layout="@layout/select_transport"/>
+
+        <TextView
+            android:id="@+id/tv_label_choose_transport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Click on your mode of transport below"
+            android:textSize="22sp"/>
+
+        <include layout="@layout/select_transport"
+            android:id="@+id/include_select_transport"/>
 
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="?android:attr/listDivider" />
-        <include layout="@layout/survey_train" />
+
+        <include layout="@layout/survey_train"
+            android:id="@+id/include_survey_train"
+            android:visibility="gone"/>
+        <include layout="@layout/survey_bus"
+            android:id="@+id/include_survey_bus"
+            android:visibility="gone"/>
+        <include layout="@layout/survey_flight"
+            android:id="@+id/include_survey_flight"
+            android:visibility="gone"/>
+        <include layout="@layout/survey_other_vehicles"
+            android:id="@+id/include_survey_others"
+            android:visibility="gone"/>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_submit"
             android:layout_width="225dp"
             android:layout_height="75dp"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
+            android:visibility="gone"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"

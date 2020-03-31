@@ -17,13 +17,13 @@
         android:layout_marginEnd="2dp"
         android:clickable="true"
         android:focusable="true"
+        card_view:cardBackgroundColor="@color/estimote_purple"
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/estimote_purple"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -57,14 +57,13 @@
         android:layout_marginEnd="2dp"
         android:clickable="true"
         android:focusable="true"
+        card_view:cardBackgroundColor="@color/estimote_purple"
         android:foreground="?android:attr/selectableItemBackground"
-        android:padding="1dp"
-        card_view:cardCornerRadius="30dp">
+        android:padding="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/estimote_purple"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -98,14 +97,13 @@
         android:layout_marginEnd="2dp"
         android:clickable="true"
         android:focusable="true"
+        card_view:cardBackgroundColor="@color/estimote_purple"
         android:foreground="?android:attr/selectableItemBackground"
-        android:padding="1dp"
-        card_view:cardCornerRadius="30dp">
+        android:padding="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/estimote_purple"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -139,14 +137,13 @@
         android:layout_marginEnd="2dp"
         android:clickable="true"
         android:focusable="true"
+        card_view:cardBackgroundColor="@color/estimote_purple"
         android:foreground="?android:attr/selectableItemBackground"
-        android:padding="1dp"
-        card_view:cardCornerRadius="30dp">
+        android:padding="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/estimote_purple"
             android:gravity="center"
             android:orientation="vertical">
 
