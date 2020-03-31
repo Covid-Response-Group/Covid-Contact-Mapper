@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/tv_label_padding">
+        <TextView
+            android:id="@+id/tv_label_vehicle_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_vehicle_number"
+            android:textSize="@dimen/tv_label_text"
+            android:padding="@dimen/tv_label_padding"/>
+
+        <EditText
+            android:id="@+id/et_vehicle_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/borders_all"
+            android:gravity="center"
+            android:importantForAutofill="no"
+            android:hint="@string/hint_vehicle_number"
+            android:inputType="text"
+            android:maxLength="1"
+            android:padding="@dimen/et_padding"
+            android:textColorHint="@color/md_grey_300"
+            android:textSize="32sp" />
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/tv_label_padding">
+        <TextView
+            android:id="@+id/tv_label_vehicle_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_vehicle_details"
+            android:textSize="@dimen/tv_label_text"
+            android:padding="@dimen/tv_label_padding"/>
+
+        <EditText
+            android:id="@+id/et_vehicle_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/borders_all"
+            android:gravity="center"
+            android:importantForAutofill="no"
+            android:hint="@string/hint_vehicle_details"
+            android:inputType="text"
+            android:maxLength="1"
+            android:padding="@dimen/et_padding"
+            android:textColorHint="@color/md_grey_300"
+            android:textSize="32sp" />
+    </LinearLayout>
+
+
+</LinearLayout>

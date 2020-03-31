@@ -15,4 +15,22 @@
     <string name="risk_value">LOW</string>
     <string name="read_duration">2 mins read</string>
     <string name="no_posts">No Posts</string>
+    <string name="select_label_train">Train</string>
+    <string name="select_label_submit">SUBMIT</string>
+    <string name="select_label_bus">Bus</string>
+    <string name="select_label_flight">Flight</string>
+    <string name="select_label_other">Other</string>
+    <string name="cd_train">train icon</string>
+    <string name="cd_submit">submit form</string>
+    <string name="cd_bus">bus icon</string>
+    <string name="cd_other">other means of transport</string>
+    <string name="cd_flight">flight</string>
+    <string name="hint_train_number">Enter Train Number</string>
+    <string name="hint_bus_number">Enter Bus Number</string>
+    <string name="hint_flight_number">Enter Flight Number</string>
+    <string name="hint_vehicle_number">Enter Vehicle Number</string>
+    <string name="hint_coach_number">Enter Coach Number</string>
+    <string name="hint_seat_number">Enter Seat Number</string>
+    <string name="label_vehicle_details">Specify Vehicle Details(like Auto, taxi, tempo etc)</string>
+    <string name="hint_vehicle_details">Specify Vehicle Details</string>
 </resources>
