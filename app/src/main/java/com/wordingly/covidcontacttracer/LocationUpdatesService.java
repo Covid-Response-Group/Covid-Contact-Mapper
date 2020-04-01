@@ -360,15 +360,17 @@ public class LocationUpdatesService extends Service {
         mLocation = location;
         boolean comp = Utils.getTimeFromLastScan() > 2*60*1000;
         Log.i(TAG, String.valueOf(Utils.getTimeFromLastScan())+"  "+comp+"  "+Utils.didLocationChangeSignificantly(Utils.SIGNIFICANT_DIST, mLocation));
-         notifyLocationChange(location);
-//        if (Utils.didLocationChangeSignificantly(Utils.SIGNIFICANT_DIST, mLocation) && Utils.getTimeFromLastScan() > 2*60*1000l) {
-//            startDiscovery();
-//            notifyLocationChange(location);
-//        } else {
-//            Log.i(TAG, "NOT LOGGING");
-//        }
-        // Notify anyone listening for broadcasts about the new location.
 
+        notifyLocationChange(location);
+
+        if (/* Utils.didLocationChangeSignificantly(Utils.SIGNIFICANT_DIST, mLocation) && */ Utils.getTimeFromLastScan() > 10* 1000L) {
+            startDiscovery();
+            notifyLocationChange(location);
+        } else {
+            Log.i(TAG, "NOT LOGGING");
+        }
+
+        // Notify anyone listening for broadcasts about the new location.
     }
 
     private void notifyLocationChange(Location location) {
@@ -411,6 +413,7 @@ public class LocationUpdatesService extends Service {
     public boolean serviceIsRunningInForeground(Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(
                 Context.ACTIVITY_SERVICE);
+
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(
                 Integer.MAX_VALUE)) {
             if (getClass().getName().equals(service.service.getClassName())) {
@@ -419,6 +422,7 @@ public class LocationUpdatesService extends Service {
                 }
             }
         }
+
         return false;
     }
 
@@ -428,15 +432,18 @@ public class LocationUpdatesService extends Service {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            switch (action) {
-                case BluetoothDevice.ACTION_FOUND:
-                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            if (action == null) {
+                return;
+            }
 
-                    int  rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
-                    if (device.getName() != null) {
-                        Log.d(TAG, "ACTION_FOUND: " + device.getName()+"__"+ device.getAddress()+"__"+rssi);
-                    }
-                    break;
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
+
+                if (device != null && device.getName() != null) {
+                    Log.d(TAG, "ACTION_FOUND: " + device.getName() + "__" + device.getAddress() + "__" + rssi);
+                    Log.d(TAG, "ACTION_LOCATION: " + mLocation.getLatitude() + "," + mLocation.getLongitude());
+                }
             }
         }
     };

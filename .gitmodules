@@ -1,3 +1,0 @@
-[submodule "app/contactbase-client"]
-	path = app/contactbase-client
-	url = https://github.com/Covid-Response-Group/contactbase-client.git
