@@ -34,6 +34,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.wordingly.covidcontacttracer.contactbase.ContactBaseClient;
 import com.wordingly.covidcontacttracer.utils.Prefs;
 import com.wordingly.covidcontacttracer.utils.Utils;
 
@@ -46,7 +47,7 @@ public class LocationUpdatesService extends Service {
 
     BluetoothAdapter mBluetoothAdapter = null;
 
-
+    private String localBluetoothMacAddress = null;
 
     private List<BluetoothDevice> mTargetDevices = new ArrayList<>();
 
@@ -115,11 +116,15 @@ public class LocationUpdatesService extends Service {
      */
     private Location mLocation;
 
+    private ContactBaseClient contactBaseClient;
+
     public LocationUpdatesService() {
     }
 
     @Override
     public void onCreate() {
+        contactBaseClient = new ContactBaseClient();
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         mLocationCallback = new LocationCallback() {
@@ -152,6 +157,8 @@ public class LocationUpdatesService extends Service {
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         registerReceiver(mReceiver, filter);
+
+        localBluetoothMacAddress = android.provider.Settings.Secure.getString(getApplicationContext().getContentResolver(), "bluetooth_address");
         /////////////////////////////////////////////
 
         HandlerThread handlerThread = new HandlerThread(TAG);
@@ -443,6 +450,11 @@ public class LocationUpdatesService extends Service {
                 if (device != null && device.getName() != null) {
                     Log.d(TAG, "ACTION_FOUND: " + device.getName() + "__" + device.getAddress() + "__" + rssi);
                     Log.d(TAG, "ACTION_LOCATION: " + mLocation.getLatitude() + "," + mLocation.getLongitude());
+                    contactBaseClient.push(Prefs.getGoogleAccountEmail(),
+                            mLocation.getLatitude(),
+                            mLocation.getLongitude(),
+                            localBluetoothMacAddress,
+                            device.getAddress());
                 }
             }
         }

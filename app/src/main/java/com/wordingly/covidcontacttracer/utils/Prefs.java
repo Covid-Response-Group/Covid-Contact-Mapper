@@ -13,6 +13,7 @@ public class Prefs {
     private static final String IS_NOTIFICATION_LOCATION_DISABLED = "is_notif_loc_disabled";
     static final String KEY_REQUESTING_LOCATION_UPDATES = "requesting_location_updates";
     static final String GOOGLE_ACCOUNT_ID = "google_account_id";
+    static final String GOOGLE_ACCOUNT_EMAIL = "google_account_email";
     private static final String LAST_LOCATION = "last_location";
     private static final String LAST_SCAN_TIME = "last_scan_time";
 
@@ -60,6 +61,14 @@ public class Prefs {
 
     public static String getGoogleAccountId(){
         return getSP().getString(GOOGLE_ACCOUNT_ID, null);
+    }
+
+    public static void setGoogleAccountEmail(String googleAccountEmail) {
+        getEditor().putString(GOOGLE_ACCOUNT_EMAIL, googleAccountEmail).apply();
+    }
+
+    public static String getGoogleAccountEmail() {
+        return getSP().getString(GOOGLE_ACCOUNT_EMAIL, null);
     }
 
     public static void updateLastLocation(Location location) {

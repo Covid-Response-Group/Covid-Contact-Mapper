@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             Prefs.setGoogleAccountId(account.getId());
+            Prefs.setGoogleAccountEmail(account.getEmail());
             // Signed in successfully, show authenticated UI.
             updateUI(account);
         } catch (ApiException e) {
