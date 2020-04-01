@@ -8,6 +8,8 @@ import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -30,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.wordingly.covidcontacttracer.utils.Prefs;
 import com.wordingly.covidcontacttracer.utils.Utils;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +50,9 @@ public class ProfileActivity extends AppCompatActivity {
     // Tracks the bound state of the service.
     private boolean mBound = false;
 
+    AlarmManager alarmManager;
+    public static final int REQUEST_CODE=101;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +62,25 @@ public class ProfileActivity extends AppCompatActivity {
         myReceiver = new MyReceiver();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         setupActionBar();
+        setupAlarmManager();
     }
+
+    private void setupAlarmManager() {
+//        alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+//        Intent intent = new Intent(this, MyReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, );
+//        PendingIntent.
+//
+//        long currentTime = System.currentTimeMillis();
+//        long oneMinute = 60 * 1000;
+//        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, currentTime + oneMinute, );
+//        alarmManager.setRepeating(
+//                AlarmManager.RTC_WAKEUP,
+//                currentTime + oneMinute,
+//                oneMinute,
+//                pendingIntent);
+    }
+
 
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
@@ -68,14 +92,17 @@ public class ProfileActivity extends AppCompatActivity {
     private class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Location location = intent.getParcelableExtra(LocationUpdatesService.EXTRA_LOCATION);
-            if (location != null) {
-                if (Prefs.getGoogleAccountId() != null) {
-                    updateLocation(Utils.getLocationText(location));
-                }
-                Toast.makeText(ProfileActivity.this, Utils.getLocationText(location)+"-"+location.getAccuracy(),
-                        Toast.LENGTH_SHORT).show();
-            }
+            Log.d(TAG, "Alarm Fired");
+
+//            startService(context);
+//            Location location = intent.getParcelableExtra(LocationUpdatesService.EXTRA_LOCATION);
+//            if (location != null) {
+//                if (Prefs.getGoogleAccountId() != null) {
+//                    updateLocation(Utils.getLocationText(location));
+//                }
+//                Toast.makeText(ProfileActivity.this, Utils.getLocationText(location)+"-"+location.getAccuracy(),
+//                        Toast.LENGTH_SHORT).show();
+//            }
         }
     }
 
@@ -132,14 +159,14 @@ public class ProfileActivity extends AppCompatActivity {
 //        bindService(new Intent(this, LocationUpdatesService.class), mServiceConnection,
 //                Context.BIND_AUTO_CREATE);
 
-        startService();
+        //startService();
 
     }
 
-    public void startService() {
+    public void startService(Context context) {
         Intent serviceIntent = new Intent(this, LocationUpdatesService.class);
         serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
-        ContextCompat.startForegroundService(this, serviceIntent);
+        ContextCompat.startForegroundService(context, serviceIntent);
     }
 
 
