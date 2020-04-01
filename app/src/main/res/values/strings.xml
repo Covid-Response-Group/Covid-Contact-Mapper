@@ -33,4 +33,5 @@
     <string name="hint_seat_number">Enter Seat Number</string>
     <string name="label_vehicle_details">Specify Vehicle Details(like Auto, taxi, tempo etc)</string>
     <string name="hint_vehicle_details">Specify Vehicle Details</string>
+    <string name="title_activity_service_starter">ServiceStarterActivity</string>
 </resources>

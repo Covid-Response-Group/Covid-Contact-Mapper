@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -22,11 +24,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StatsActivity"></activity>
+
+        <activity android:name=".WebPageActivity" />
         <activity android:name=".NewsActivity" />
         <activity android:name=".TravelTrackActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ProfileActivity" />
+
 
         <service
             android:name=".LocationUpdatesService"

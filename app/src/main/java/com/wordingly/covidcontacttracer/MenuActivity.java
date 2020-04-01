@@ -1,7 +1,6 @@
 package com.wordingly.covidcontacttracer;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -10,9 +9,6 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -73,7 +69,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, NewsActivity.class));
                 break;
             case R.id.cv_stats:
-                startActivity(new Intent(this, StatsActivity.class));
+                Intent intent = new Intent(this, WebPageActivity.class);
+                intent.putExtra("url", "https://www.arcgis.com/apps/opsdashboard/index.html#/85320e2ea5424dfaaa75ae62e5c06e61");
+                startActivity(intent);
+                //startActivity(new Intent(this, StatsActivity.class));
                 break;
         }
     }
