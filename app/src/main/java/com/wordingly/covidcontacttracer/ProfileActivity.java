@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.wordingly.covidcontacttracer.network.NetworkCalls;
 import com.wordingly.covidcontacttracer.utils.Prefs;
 import com.wordingly.covidcontacttracer.utils.Utils;
 
@@ -62,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
         myReceiver = new MyReceiver();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         setupActionBar();
+        NetworkCalls.fetchPosts();
         setupAlarmManager();
     }
 

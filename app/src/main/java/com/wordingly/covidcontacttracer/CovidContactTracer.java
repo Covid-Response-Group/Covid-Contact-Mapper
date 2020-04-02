@@ -2,12 +2,14 @@ package com.wordingly.covidcontacttracer;
 
 import android.app.Application;
 
+import androidx.multidex.MultiDexApplication;
+
 import com.wordingly.covidcontacttracer.utils.Prefs;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class CovidContactTracer extends Application {
+public class CovidContactTracer extends MultiDexApplication {
 
     public static final String TAG = CovidContactTracer.class.getSimpleName();
     private static CovidContactTracer mInstance;
