@@ -3,6 +3,8 @@ package com.wordingly.covidcontacttracer;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -23,7 +25,6 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -34,12 +35,14 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.wordingly.covidcontacttracer.contactbase.ContactBaseClient;
 import com.wordingly.covidcontacttracer.utils.Prefs;
 import com.wordingly.covidcontacttracer.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 
 public class LocationUpdatesService extends Service {
@@ -47,7 +50,7 @@ public class LocationUpdatesService extends Service {
 
     BluetoothAdapter mBluetoothAdapter = null;
 
-    private String localBluetoothMacAddress = null;
+
 
     private List<BluetoothDevice> mTargetDevices = new ArrayList<>();
 
@@ -116,15 +119,11 @@ public class LocationUpdatesService extends Service {
      */
     private Location mLocation;
 
-    private ContactBaseClient contactBaseClient;
-
     public LocationUpdatesService() {
     }
 
     @Override
     public void onCreate() {
-        contactBaseClient = new ContactBaseClient();
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         mLocationCallback = new LocationCallback() {
@@ -157,8 +156,6 @@ public class LocationUpdatesService extends Service {
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         registerReceiver(mReceiver, filter);
-
-        localBluetoothMacAddress = android.provider.Settings.Secure.getString(getApplicationContext().getContentResolver(), "bluetooth_address");
         /////////////////////////////////////////////
 
         HandlerThread handlerThread = new HandlerThread(TAG);
@@ -173,40 +170,23 @@ public class LocationUpdatesService extends Service {
 
             mNotificationManager.createNotificationChannel(mChannel);
         }
+        requestLocationUpdates();
     }
-
-//    @Override
-//    public int onStartCommand(Intent intent, int flags, int startId) {
-//        Log.i(TAG, "Service started");
-//        boolean startedFromNotification = intent.getBooleanExtra(EXTRA_STARTED_FROM_NOTIFICATION,
-//                false);
-//
-//        // We got here because the user decided to remove location updates from the notification.
-//        if (startedFromNotification) {
-//            removeLocationUpdates();
-//            stopSelf();
-//        }
-//
-//        return START_STICKY;
-//    }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        try {
-            mFusedLocationClient.requestLocationUpdates(mLocationRequest,
-                    mLocationCallback, Looper.myLooper());
-        } catch (SecurityException unlikely) {
-            Prefs.setRequestingLocationUpdates(false);
-            Log.e(TAG, "Lost location permission. Could not request updates. " + unlikely);
+        Log.i(TAG, "Service started");
+        boolean startedFromNotification = intent.getBooleanExtra(EXTRA_STARTED_FROM_NOTIFICATION,
+                false);
+
+        // We got here because the user decided to remove location updates from the notification.
+        if (startedFromNotification) {
+            removeLocationUpdates();
+            stopSelf();
         }
-        Notification notification = getNotification();
-        startForeground(1, notification);
-        //do heavy work on a background thread
-        //stopSelf();
+
         return START_STICKY;
     }
-
 
     private void startDiscovery() {
         Log.d(TAG, "startDiscovery");
@@ -277,7 +257,8 @@ public class LocationUpdatesService extends Service {
     public void requestLocationUpdates() {
         Log.i(TAG, "Requesting location updates");
         Prefs.setRequestingLocationUpdates(true);
-        ContextCompat.startForegroundService(this, new Intent(getApplicationContext(), LocationUpdatesService.class));
+        startForeground(NOTIFICATION_ID, getNotification());
+
         try {
             mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                     mLocationCallback, Looper.myLooper());
@@ -367,17 +348,15 @@ public class LocationUpdatesService extends Service {
         mLocation = location;
         boolean comp = Utils.getTimeFromLastScan() > 2*60*1000;
         Log.i(TAG, String.valueOf(Utils.getTimeFromLastScan())+"  "+comp+"  "+Utils.didLocationChangeSignificantly(Utils.SIGNIFICANT_DIST, mLocation));
-
         notifyLocationChange(location);
-
-        if (/* Utils.didLocationChangeSignificantly(Utils.SIGNIFICANT_DIST, mLocation) && */ Utils.getTimeFromLastScan() > 10* 1000L) {
-            startDiscovery();
-            notifyLocationChange(location);
-        } else {
-            Log.i(TAG, "NOT LOGGING");
-        }
-
+//        if (Utils.didLocationChangeSignificantly(Utils.SIGNIFICANT_DIST, mLocation) && Utils.getTimeFromLastScan() > 2*60*1000l) {
+//            startDiscovery();
+//            notifyLocationChange(location);
+//        } else {
+//            Log.i(TAG, "NOT LOGGING");
+//        }
         // Notify anyone listening for broadcasts about the new location.
+
     }
 
     private void notifyLocationChange(Location location) {
@@ -420,7 +399,6 @@ public class LocationUpdatesService extends Service {
     public boolean serviceIsRunningInForeground(Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(
                 Context.ACTIVITY_SERVICE);
-
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(
                 Integer.MAX_VALUE)) {
             if (getClass().getName().equals(service.service.getClassName())) {
@@ -429,7 +407,6 @@ public class LocationUpdatesService extends Service {
                 }
             }
         }
-
         return false;
     }
 
@@ -439,23 +416,15 @@ public class LocationUpdatesService extends Service {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            if (action == null) {
-                return;
-            }
+            switch (action) {
+                case BluetoothDevice.ACTION_FOUND:
+                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-
-                if (device != null && device.getName() != null) {
-                    Log.d(TAG, "ACTION_FOUND: " + device.getName() + "__" + device.getAddress() + "__" + rssi);
-                    Log.d(TAG, "ACTION_LOCATION: " + mLocation.getLatitude() + "," + mLocation.getLongitude());
-                    contactBaseClient.push(Prefs.getGoogleAccountEmail(),
-                            mLocation.getLatitude(),
-                            mLocation.getLongitude(),
-                            localBluetoothMacAddress,
-                            device.getAddress());
-                }
+                    int  rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
+                    if (device.getName() != null) {
+                        Log.d(TAG, "ACTION_FOUND: " + device.getName()+"__"+ device.getAddress()+"__"+rssi);
+                    }
+                    break;
             }
         }
     };

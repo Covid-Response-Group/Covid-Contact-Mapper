@@ -1,7 +1,20 @@
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'realm-android'
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/'}
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.4, 0.99.99]'
+    }
+}
 
+
+repositories {
+    maven { url 'https://maven.google.com' }
+}
 android {
     compileSdkVersion 29
     defaultConfig {
@@ -13,6 +26,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
+
+        manifestPlaceholders = [
+                onesignal_app_id: '9b2d16ed-356b-4f7c-a748-bbea54ee03d8',
+                // Project number pulled from dashboard, local value is ignored.
+                onesignal_google_project_number: 'REMOTE'
+                ]
     }
 
     buildTypes {
@@ -57,4 +76,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
     implementation 'ch.hsr:geohash:1.4.0'
     implementation 'com.android.support:multidex:2.0.1'
+    implementation 'androidx.work:work-runtime:2.3.4'
+    implementation 'com.google.firebase:firebase-messaging:18.0.0'
+    implementation 'com.onesignal:OneSignal:[3.13.0, 3.99.99]'
 }

@@ -8,7 +8,7 @@ import com.wordingly.covidcontacttracer.utils.Prefs;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-
+import com.onesignal.OneSignal;
 public class CovidContactTracer extends MultiDexApplication {
 
     public static final String TAG = CovidContactTracer.class.getSimpleName();
@@ -17,6 +17,7 @@ public class CovidContactTracer extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         Prefs.init(this);
+        initOneSignal();
         initRealm();
         mInstance = this;
     }
@@ -29,6 +30,13 @@ public class CovidContactTracer extends MultiDexApplication {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
+    }
+
+    private void initOneSignal() {
+        OneSignal.startInit(this)
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .init();
     }
 
 

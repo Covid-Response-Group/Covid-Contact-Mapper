@@ -5,6 +5,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.Manifest;
 import android.content.Intent;
@@ -17,6 +21,8 @@ import android.view.View;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.concurrent.TimeUnit;
+
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private static final String TAG = MenuActivity.class.getSimpleName();
@@ -27,7 +33,20 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         setupActionBar();
+        //startWorker();
     }
+
+    private void startWorker() {
+        Constraints constraints = new Constraints(Constraints.NONE);
+        //Constraints constraints = new Constraints.Builder().setRequiresDeviceIdle(true).build();
+//        Constraints constraints = new Constraints.Builder().setRequiredNetworkType
+//                (NetworkType.CONNECTED).build();
+        PeriodicWorkRequest locationWork = new PeriodicWorkRequest.Builder(ServiceWorker
+                .class, 15, TimeUnit.MINUTES).addTag(ServiceWorker.TAG)
+                .setConstraints(constraints).build();
+        WorkManager.getInstance(getApplicationContext()).enqueue(locationWork);
+    }
+
 
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
