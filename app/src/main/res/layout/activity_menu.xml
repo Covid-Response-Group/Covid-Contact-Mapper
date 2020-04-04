@@ -35,7 +35,6 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
                 android:padding="1dp"
-                card_view:cardCornerRadius="30dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground">
 
@@ -74,7 +73,6 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
-                card_view:cardCornerRadius="30dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground">
 
@@ -123,7 +121,6 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
-                card_view:cardCornerRadius="30dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground">
 
@@ -164,7 +161,6 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
-                card_view:cardCornerRadius="30dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground">
 

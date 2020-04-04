@@ -3,7 +3,6 @@ package com.wordingly.covidcontacttracer;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.wordingly.covidcontacttracer.adapters.PostsAdapter;
-import com.wordingly.covidcontacttracer.objects.Posts;
+import com.wordingly.covidcontacttracer.network.NetworkCalls;
+import com.wordingly.covidcontacttracer.objects.Post;
 import com.wordingly.covidcontacttracer.utils.Utils;
 
 import io.realm.OrderedRealmCollection;
@@ -44,6 +44,7 @@ public class NewsActivity extends AppCompatActivity {
 
         this.realm = Realm.getDefaultInstance();
 
+        NetworkCalls.fetchAllData();
 
         postsRecyclerView = (RecyclerView) findViewById(R.id.posts_recycler_view);
         postsEmptyLinearLayout = (LinearLayout) findViewById(R.id.posts_empty_linear_layout);
@@ -91,7 +92,7 @@ public class NewsActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        if (realm.where(Posts.class).count() == 0) {
+        if (realm.where(Post.class).count() == 0) {
             postsEmptyLinearLayout.setVisibility(View.VISIBLE);
             postsRecyclerView.setVisibility(View.GONE);
         } else {
@@ -117,7 +118,7 @@ public class NewsActivity extends AppCompatActivity {
     private void setupRecycler() {
         String fieldNames[] = {"is_pinned", "created_at"};
         Sort sortOrders[] = {Sort.DESCENDING, Sort.DESCENDING};
-        OrderedRealmCollection<Posts> data = realm.where(Posts.class).findAllAsync().sort(fieldNames,sortOrders);
+        OrderedRealmCollection<Post> data = realm.where(Post.class).findAll();
         postsAdapter = new PostsAdapter(this, data);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         postsRecyclerView.setLayoutManager(linearLayoutManager);

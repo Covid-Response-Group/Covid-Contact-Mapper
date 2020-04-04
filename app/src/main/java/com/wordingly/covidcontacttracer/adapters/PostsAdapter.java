@@ -18,19 +18,19 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.wordingly.covidcontacttracer.PostDetailsActivity;
 import com.wordingly.covidcontacttracer.R;
 import com.wordingly.covidcontacttracer.WebPageActivity;
-import com.wordingly.covidcontacttracer.objects.Posts;
+import com.wordingly.covidcontacttracer.objects.Post;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
-public class PostsAdapter extends RealmRecyclerViewAdapter<Posts, PostsAdapter.PostViewHolder> {
+public class PostsAdapter extends RealmRecyclerViewAdapter<Post, PostsAdapter.PostViewHolder> {
 
     private final Context context;
     private final String TAG = PostsAdapter.class.getSimpleName();
 
-    public PostsAdapter(Context context, OrderedRealmCollection<Posts> data) {
+    public PostsAdapter(Context context, OrderedRealmCollection<Post> data) {
         super(data, true);
         this.context = context;
     }
@@ -44,7 +44,7 @@ public class PostsAdapter extends RealmRecyclerViewAdapter<Posts, PostsAdapter.P
     @Override
     public void onBindViewHolder(final PostViewHolder holder, int position) {
 
-        final Posts post = getData().get(position);
+        final Post post = getData().get(position);
 
         if (post != null) {
             holder.postTitleTextView.setText(post.getTitle());
@@ -67,22 +67,22 @@ public class PostsAdapter extends RealmRecyclerViewAdapter<Posts, PostsAdapter.P
                     Intent i = new Intent(Intent.ACTION_SEND);
                     i.setType("text/plain");
                     i.putExtra(Intent.EXTRA_SUBJECT, post.getTitle());
-                    if (post.getPost_type().equals(Posts.POST_TYPE_YOUTUBE_VIDEO)) {
-                        i.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=" + post.getMedia_url());
+                    if (post.getPostType().equals(Post.POST_TYPE_YOUTUBE_VIDEO)) {
+                        i.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=" + post.getMediaUrl());
                     } else {
-                        i.putExtra(Intent.EXTRA_TEXT, post.getWeb_url());
+                        i.putExtra(Intent.EXTRA_TEXT, post.getWebUrl());
                     }
                     context.startActivity(Intent.createChooser(i, "Share Post"));
                 }
             });
 
-            if (!post.getMedia_url().equals("")) {
+            if (!post.getMediaUrl().equals("")) {
                 // Only default and web links have image media
                 String mediaUrl = "";
-                if (post.getPost_type().equals(Posts.POST_TYPE_DEFAULT) || post.getPost_type().equals(Posts.POST_TYPE_WEB_LINK)) {
-                    mediaUrl = post.getMedia_url();
-                } else if (post.getPost_type().equals(Posts.POST_TYPE_YOUTUBE_VIDEO)) {
-                    mediaUrl = "https://img.youtube.com/vi/" + post.getMedia_url() + "/0.jpg";
+                if (post.getPostType().equals(Post.POST_TYPE_DEFAULT) || post.getPostType().equals(Post.POST_TYPE_WEB_LINK)) {
+                    mediaUrl = post.getMediaUrl();
+                } else if (post.getPostType().equals(Post.POST_TYPE_YOUTUBE_VIDEO)) {
+                    mediaUrl = "https://img.youtube.com/vi/" + post.getMediaUrl() + "/0.jpg";
                 }
                 Glide.with(context)
                         .load(mediaUrl)
@@ -94,34 +94,34 @@ public class PostsAdapter extends RealmRecyclerViewAdapter<Posts, PostsAdapter.P
                 holder.postMediaImageView.setVisibility(View.GONE);
             }
 
-            if (post.getPost_type().equals(Posts.POST_TYPE_DEFAULT)) {
+            if (post.getPostType().equals(Post.POST_TYPE_DEFAULT)) {
                 holder.postLinearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(v.getContext(), PostDetailsActivity.class);
                         intent.putExtra("postTitle", post.getTitle());
-                        intent.putExtra("postBody", post.getBody());
-                        intent.putExtra("postMediaUrl", post.getMedia_url());
-                        intent.putExtra("postWebUrl", post.getWeb_url());
-                        intent.putExtra("postBody", post.getBody());
+                        //intent.putExtra("postBody", post.getBody);
+                        intent.putExtra("postMediaUrl", post.getMediaUrl());
+                        intent.putExtra("postWebUrl", post.getWebUrl());
+                        //intent.putExtra("postBody", post.getBody());
                         context.startActivity(intent);
                     }
                 });
-            } else if (post.getPost_type().equals(Posts.POST_TYPE_WEB_LINK)) {
+            } else if (post.getPostType().equals(Post.POST_TYPE_WEB_LINK)) {
                 holder.postLinearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(context, WebPageActivity.class);
-                        intent.putExtra("url", post.getWeb_url());
+                        intent.putExtra("url", post.getWebUrl());
                         context.startActivity(intent);
                     }
                 });
-            } else if (post.getPost_type().equals(Posts.POST_TYPE_YOUTUBE_VIDEO)) {
+            } else if (post.getPostType().equals(Post.POST_TYPE_YOUTUBE_VIDEO)) {
                 holder.postLinearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(context, WebPageActivity.class);
-                        intent.putExtra("url", "https://www.youtube.com/watch?v=" + post.getMedia_url());
+                        intent.putExtra("url", "https://www.youtube.com/watch?v=" + post.getMediaUrl());
                         context.startActivity(intent);
                     }
                 });

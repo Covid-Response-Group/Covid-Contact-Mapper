@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.wordingly.covidcontacttracer.network.NetworkCalls;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +35,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_menu);
         setupActionBar();
         //startWorker();
+
     }
 
     private void startWorker() {
