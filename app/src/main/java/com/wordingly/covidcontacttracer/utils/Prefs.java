@@ -80,7 +80,7 @@ public class Prefs {
     }
 
     public static void updateLastScanTime() {
-        getEditor().putLong(LAST_SCAN_TIME, System.currentTimeMillis());
+        getEditor().putLong(LAST_SCAN_TIME, System.currentTimeMillis()).apply();
     }
 
     public static long getLastScanTime() {

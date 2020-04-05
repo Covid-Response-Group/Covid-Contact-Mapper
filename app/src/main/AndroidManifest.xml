@@ -28,7 +28,7 @@
         <activity android:name=".WebPageActivity" />
         <activity android:name=".NewsActivity" />
         <activity android:name=".TravelTrackActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MenuActivity" />
         <activity android:name=".ProfileActivity" />
 
         <service
@@ -45,7 +45,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".MenuActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

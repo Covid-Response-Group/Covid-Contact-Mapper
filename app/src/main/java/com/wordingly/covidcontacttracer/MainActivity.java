@@ -69,7 +69,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         if (account != null) {
             findViewById(R.id.btn_google_signin).setVisibility(View.GONE);
             // Go to next screen
-            startActivity(new Intent(this, ProfileActivity.class));
+            Intent menuIntent = new Intent(this, MenuActivity.class);
+            startActivity(menuIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+        } else {
+            signIn();
         }
     }
 
@@ -116,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         if (!isSignedIn()) {
             setupGoogleSignIn();
         } else {
-
             updateUI(GoogleSignIn.getLastSignedInAccount(this));
         }
     }

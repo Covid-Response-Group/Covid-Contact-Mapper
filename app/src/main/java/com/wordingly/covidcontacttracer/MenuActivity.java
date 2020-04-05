@@ -34,15 +34,13 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         setupActionBar();
-        //startWorker();
+        startWorker();
 
     }
 
     private void startWorker() {
         Constraints constraints = new Constraints(Constraints.NONE);
-        //Constraints constraints = new Constraints.Builder().setRequiresDeviceIdle(true).build();
-//        Constraints constraints = new Constraints.Builder().setRequiredNetworkType
-//                (NetworkType.CONNECTED).build();
+
         PeriodicWorkRequest locationWork = new PeriodicWorkRequest.Builder(ServiceWorker
                 .class, 15, TimeUnit.MINUTES).addTag(ServiceWorker.TAG)
                 .setConstraints(constraints).build();
@@ -68,12 +66,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupViews() {
         cvProfile = findViewById(R.id.cv_profile);
-        cvTravelRecord = findViewById(R.id.cv_travel_record);
-        cvNews = findViewById(R.id.cv_news);
         cvStats = findViewById(R.id.cv_stats);
         cvProfile.setOnClickListener(this);
-        cvTravelRecord.setOnClickListener(this);
-        cvNews.setOnClickListener(this);
+//        cvTravelRecord.setOnClickListener(this);
+//        cvNews.setOnClickListener(this);
         cvStats.setOnClickListener(this);
     }
 
@@ -82,12 +78,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.cv_profile:
                 startActivity(new Intent(this, ProfileActivity.class));
-                break;
-            case R.id.cv_travel_record:
-                startActivity(new Intent(this, TravelTrackActivity.class));
-                break;
-            case R.id.cv_news:
-                startActivity(new Intent(this, NewsActivity.class));
                 break;
             case R.id.cv_stats:
                 Intent intent = new Intent(this, WebPageActivity.class);
@@ -98,6 +88,11 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
     private void requestPermissions() {
         boolean shouldProvideRationale =

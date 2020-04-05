@@ -35,12 +35,16 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.wordingly.covidcontacttracer.utils.Prefs;
 import com.wordingly.covidcontacttracer.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -49,12 +53,7 @@ public class LocationUpdatesService extends Service {
 
 
     BluetoothAdapter mBluetoothAdapter = null;
-
-
-
     private List<BluetoothDevice> mTargetDevices = new ArrayList<>();
-
-
     private static final String PACKAGE_NAME =
             "com.wordingly.covidcontacttracer";
 
@@ -74,7 +73,7 @@ public class LocationUpdatesService extends Service {
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 20000;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
 
     /**
      * The fastest rate for active location updates. Updates will never be more frequent
@@ -118,6 +117,7 @@ public class LocationUpdatesService extends Service {
      * The current location.
      */
     private Location mLocation;
+    int mCounter = 0;
 
     public LocationUpdatesService() {
     }
@@ -192,7 +192,7 @@ public class LocationUpdatesService extends Service {
         Log.d(TAG, "startDiscovery");
         if (mBluetoothAdapter != null) {
             mTargetDevices.clear();
-
+            Prefs.updateLastScanTime();
             Log.d(TAG, "request BT startDiscovery");
             mBluetoothAdapter.startDiscovery();
         } else {
@@ -346,15 +346,16 @@ public class LocationUpdatesService extends Service {
         Log.i(TAG, "New location: " + location);
 
         mLocation = location;
-        boolean comp = Utils.getTimeFromLastScan() > 2*60*1000;
+        boolean comp = Utils.getTimeFromLastScan() > 60*1000;
         Log.i(TAG, String.valueOf(Utils.getTimeFromLastScan())+"  "+comp+"  "+Utils.didLocationChangeSignificantly(Utils.SIGNIFICANT_DIST, mLocation));
-        notifyLocationChange(location);
-//        if (Utils.didLocationChangeSignificantly(Utils.SIGNIFICANT_DIST, mLocation) && Utils.getTimeFromLastScan() > 2*60*1000l) {
-//            startDiscovery();
-//            notifyLocationChange(location);
-//        } else {
-//            Log.i(TAG, "NOT LOGGING");
-//        }
+        //notifyLocationChange(location);
+        if (comp) {
+            startDiscovery();
+            Log.i(TAG, "LOGGING");
+            notifyLocationChange(location);
+        } else {
+            Log.i(TAG, "NOT LOGGING");
+        }
         // Notify anyone listening for broadcasts about the new location.
 
     }
@@ -366,7 +367,14 @@ public class LocationUpdatesService extends Service {
 
         // Update notification content if running as a foreground service.
         if (serviceIsRunningInForeground(this)) {
-            mNotificationManager.notify(NOTIFICATION_ID, getNotification());
+            if (mCounter%20 == 0) {
+                Log.d("Location Notified", "mCounter: "+mCounter);
+                mNotificationManager.notify(NOTIFICATION_ID, getNotification());
+                mCounter = 1;
+            } else {
+                mCounter++;
+                Log.d("Location NOT Notified", "mCounter: "+mCounter);
+            }
         }
     }
 
@@ -422,10 +430,23 @@ public class LocationUpdatesService extends Service {
 
                     int  rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
                     if (device.getName() != null) {
+                        if (rssi > -70) {
+                            //updateDevice(device.getAddress());
+                        }
                         Log.d(TAG, "ACTION_FOUND: " + device.getName()+"__"+ device.getAddress()+"__"+rssi);
                     }
                     break;
             }
         }
     };
+
+
+    public void updateDevice(String btAddr) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+        DatabaseReference userRef = ref.child("uk").child("contacts").child(Prefs.getGoogleAccountId());
+        Map<String, Object> device = new HashMap<>();
+        device.put(btAddr,String.valueOf(System.currentTimeMillis()));
+    }
+
 }

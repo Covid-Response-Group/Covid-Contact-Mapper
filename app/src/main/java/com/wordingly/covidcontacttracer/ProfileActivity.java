@@ -68,7 +68,7 @@ public class ProfileActivity extends AppCompatActivity {
             Location location = intent.getParcelableExtra(LocationUpdatesService.EXTRA_LOCATION);
             if (location != null) {
                 if (Prefs.getGoogleAccountId() != null) {
-                    updateLocation(Utils.getLocationText(location));
+                    //updateLocation(Utils.getLocationText(location));
                 }
                 Toast.makeText(ProfileActivity.this, Utils.getLocationText(location)+"-"+location.getAccuracy(),
                         Toast.LENGTH_SHORT).show();
